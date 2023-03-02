@@ -53,7 +53,7 @@ def download():
             else:
                 return redirect(url_for('index'))
             
-@app.route('/return')
+@app.route('/return', methods=['POST', 'GET'])
 def Return():
     return redirect(url_for('index'))
 
