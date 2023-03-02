@@ -35,7 +35,7 @@ def response():
         return redirect(url_for('index'))
     
         
-@app.route('/download')
+@app.route('/download' ,methods=['POST', 'GET'])
 def download():
         if request.method == "POST":
             if 'link_yt' in session:
@@ -58,4 +58,4 @@ def Return():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, host="0.0.0.0")
