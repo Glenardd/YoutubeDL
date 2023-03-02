@@ -31,6 +31,7 @@ def response():
             return render_template('response.html', thumbnail=thumbnail, title=title, link=link)
     except:
         return redirect(url_for('index'))
+    return redirect(url_for('index'))
         
 @app.route('/download', methods=['POST', 'GET'])
 def download():
