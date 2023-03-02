@@ -19,16 +19,20 @@ def index():
 
 @app.route('/response')
 def response():
-    if 'link' in session:
-        link = session['link']
-        link_= str(link)
+    try:
+        if 'link' in session:
+            link = session['link']
+            link_= str(link)
 
-        yt = YouTube(link_)
-        thumbnail = yt.thumbnail_url
-        title = yt.title
+            yt = YouTube(link_)
+            thumbnail = yt.thumbnail_url
+            title = yt.title
 
-        return render_template('response.html', thumbnail=thumbnail, title=title, link=link)
-    return redirect(url_for('index'))
+            return render_template('response.html', thumbnail=thumbnail, title=title, link=link)
+        else:
+            return redirect(url_for('index'))
+    except:
+        return redirect(url_for('index'))
     
         
 @app.route('/download')
@@ -54,6 +58,4 @@ def Return():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
-    # app.run(debug=True)
-    
+    app.run(debug=True)
