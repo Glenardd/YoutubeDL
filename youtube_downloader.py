@@ -29,8 +29,6 @@ def response():
             title = yt.title
 
             return render_template('response.html', thumbnail=thumbnail, title=title, link=link)
-        else:
-            return redirect(url_for('index'))
     except:
         return redirect(url_for('index'))
     
