@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block body  %}
+<form action='/' name='url-forms' method='POST'>
+    <input type="text" name="video-url" id="video-url" placeholder="Copy and Paste link here">
+    <input type='submit' name='thumbnail' id='thumbnail-button' value='Thumbnail'>
+    <h3 id='warning'></h3>
+</form>                 
+{% endblock %}
+
