@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, session
 from  pytube import YouTube
 import urllib.parse
 import os
@@ -48,27 +48,27 @@ def response(url):
     return render_template('response.html', thumbnail=thumbnail, title=title)
 
         
-@app.route('/download' ,methods=['POST', 'GET'])
-def download():
-        if request.method == "POST":
-            if 'link_yt' in session:
-                link_url = session['link_yt']
+# @app.route('/download' ,methods=['POST', 'GET'])
+# def download():
+#         if request.method == "POST":
+#             if 'link_yt' in session:
+#                 link_url = session['link_yt']
 
-                yt = YouTube(str(link_url))
-                thumbnail = yt.thumbnail_url
-                title = yt.title
+#                 yt = YouTube(str(link_url))
+#                 thumbnail = yt.thumbnail_url
+#                 title = yt.title
 
-                download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
+#                 download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
 
-                yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
+#                 yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
 
-                return render_template('response.html', thumbnail=thumbnail, title=title)
-            else:
-                return redirect(url_for('index'))
+#                 return render_template('response.html', thumbnail=thumbnail, title=title)
+#             else:
+#                 return redirect(url_for('index'))
             
-@app.route('/return', methods=['POST', 'GET'])
-def Return():
-    return redirect(url_for('index'))
+# @app.route('/return', methods=['POST', 'GET'])
+# def Return():
+#     return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
