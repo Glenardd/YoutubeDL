@@ -19,19 +19,18 @@ def index():
 
 @app.route('/response')
 def response():
-    try:
-        if 'link' in session:
-            link = session['link']
-            link_= str(link)
+    if 'link' in session:
+        link = session['link']
+        link_= str(link)
 
-            yt = YouTube(link_)
-            thumbnail = yt.thumbnail_url
-            title = yt.title
+        yt = YouTube(link_)
+        thumbnail = yt.thumbnail_url
+        title = yt.title
 
-            return render_template('response.html', thumbnail=thumbnail, title=title, link=link)
-    except:
+        return render_template('response.html', thumbnail=thumbnail, title=title, link=link)
+    else:
         return redirect(url_for('index'))
-    return redirect(url_for('index'))
+    
         
 @app.route('/download', methods=['POST', 'GET'])
 def download():
