@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, session
 from  pytube import YouTube
 from waitress import serve
-import os
 
 app = Flask(__name__)
 app.secret_key = '272727'
@@ -46,9 +45,7 @@ def download():
                 thumbnail = yt.thumbnail_url
                 title = yt.title
 
-                download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
-
-                yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
+                yt.streams.filter(progressive=True).get_by_resolution('720p').download()
 
                 return render_template('response.html', thumbnail=thumbnail, title=title)
             else:
