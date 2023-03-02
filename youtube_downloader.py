@@ -19,21 +19,19 @@ def index():
 
 @app.route('/response')
 def response():
-    try:
-        if 'link' in session:
-            link = session['link']
-            link_= str(link)
+    if 'link' in session:
+        link = session['link']
+        link_= str(link)
 
-            yt = YouTube(link_)
-            thumbnail = yt.thumbnail_url
-            title = yt.title
+        yt = YouTube(link_)
+        thumbnail = yt.thumbnail_url
+        title = yt.title
 
-            return render_template('response.html', thumbnail=thumbnail, title=title, link=link)
-    except:
-        return redirect(url_for('index'))
+        return render_template('response.html', thumbnail=thumbnail, title=title, link=link)
+    return redirect(url_for('index'))
     
         
-@app.route('/download', methods=['POST', 'GET'])
+@app.route('/download')
 def download():
         if request.method == "POST":
             if 'link_yt' in session:
@@ -51,7 +49,7 @@ def download():
             else:
                 return redirect(url_for('index'))
             
-@app.route('/return', methods=['POST', 'GET'])
+@app.route('/return')
 def Return():
     return redirect(url_for('index'))
 
