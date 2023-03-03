@@ -39,9 +39,13 @@ def download():
 
     yt = YouTube(str_url)
     
-    #download_dir = f"{os.getenv('USERPROFILE')}//Downloads"
+    if os.name == 'nt':
+        download_dir = f"{os.getenv('USERPROFILE')}//Downloads"
     
-    download = yt.streams.filter(progressive=True).get_by_resolution('720p').download()
+    else:
+        download_dir = f"{os.getenv('HOME')}/Downloads"
+
+    download = yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
 
     return send_file(download, as_attachment=True, mimetype='video/mp4')
 

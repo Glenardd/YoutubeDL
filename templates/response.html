@@ -4,7 +4,7 @@
 <form id='download' action='/download' method="POST">
     <img id='thumbnail' src="{{ thumbnail_ }}">
     <h3 id='title'>{{ title_ }}</h3>
-    <input type="hidden" name="video-url" id="video-url" placeholder="Copy and Paste link here" value="{{ url }}" readonly>
+    <input type="hidden" name="video-url" id="video-url" placeholder="Copy and Paste link here" value="{{ url }}">
     <input type='submit' name='download' id='download-button' value='Download'>
 </form>
 <form id='return' action='/return' method='POST'>
