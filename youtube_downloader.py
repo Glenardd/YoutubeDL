@@ -46,7 +46,7 @@ def download():
     if os.name == 'nt':
         download_dir = f"{os.getenv('USERPROFILE')}//Downloads"
 
-    video = yt.streams.filter(progressive=True).get_by_resolution('720p')
+    video = yt.streams.filter(progressive=True).get_by_resolution('480p')
 
     video.stream_to_buffer(buffer)
     buffer.seek(0)
@@ -59,4 +59,4 @@ def Return():
     return redirect(url_for('index'))
     
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
