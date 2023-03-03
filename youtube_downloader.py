@@ -42,7 +42,7 @@ def download():
 
     yt = YouTube(str_url)
 
-    video = yt.streams.filter(progressive=True).get_lower_resolution().stream_to_buffer(buffer)
+    video = yt.streams.filter(progressive=True).get_lowest_resolution().stream_to_buffer(buffer)
 
     buffer.seek(0)
 
