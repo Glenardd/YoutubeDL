@@ -44,7 +44,7 @@ def download():
 
         download = yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
 
-        return send_file(download, as_attachment=True, mimetype='video/mp4') 
+    return send_file(download, as_attachment=True, mimetype='video/mp4') 
    
 
 @app.route('/return', methods=['POST'])
