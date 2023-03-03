@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, send_file
 from  pytube import YouTube
 from flask_session import Session
 import os
@@ -51,9 +51,9 @@ def download():
 
         download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
 
-        yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
+        download_ = yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
     
-        return redirect(url_for(f'response/{link}'))
+        return send_file(download_ , as_attachment=True)
 
 @app.route('/return', methods=['POST'])
 def Return():
