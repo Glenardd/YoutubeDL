@@ -46,7 +46,8 @@ def download():
     if os.name == 'nt':
         download_dir = f"{os.getenv('USERPROFILE')}//Downloads"
 
-    video = yt.streams.filter(progressive=True).get_highest_resolution()
+    video = yt.streams.filter(progressive=True).get_by_resolution('720p')
+
     video.stream_to_buffer(buffer)
     buffer.seek(0)
 
