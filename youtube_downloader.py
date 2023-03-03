@@ -22,7 +22,7 @@ def index():
     else:
         return render_template('index.html')
 
-@app.route('/response')
+@app.route('/response', methods=["GET"])
 def response():
 
     download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
@@ -36,6 +36,8 @@ def response():
         title = yt.title
 
         return render_template('response.html', thumbnail_=thumbnail, title_=title)
+
+    return redirect(url_for('index'))
 
 @app.route('/download')
 def download():
