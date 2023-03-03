@@ -37,7 +37,7 @@ def response():
 
         return render_template('response.html', thumbnail_=thumbnail, title_=title)
 
-    return redirect(url_for('index'))
+    return render_template('response.html')
 
 @app.route('/download')
 def download():
