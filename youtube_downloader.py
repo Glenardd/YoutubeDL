@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, send_file
 from  pytube import YouTube
 import os
 import urllib.parse
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -34,6 +35,9 @@ def response(url):
 
 @app.route('/download', methods=['POST'])
 def download():
+
+    buffer = BytesIO()
+
     url_ = request.form['video-url']
     str_url = str(url_)
 
@@ -42,9 +46,12 @@ def download():
     if os.name == 'nt':
         download_dir = f"{os.getenv('USERPROFILE')}//Downloads"
 
-        download = yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
+    video = yt.streams.filter(progressive=True).get_by_resolution('720p')
 
-    return send_file(download, as_attachment=True, mimetype='video/mp4') 
+    video.stream_to_buffer(buffer)
+    buffer.seek(0)
+
+    return send_file(buffer, as_attachment=True, download_name=f"{yt.title}.mp4" ,mimetype='video/mp4') 
    
 
 @app.route('/return', methods=['POST'])
