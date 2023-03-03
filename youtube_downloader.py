@@ -42,14 +42,11 @@ def response(url):
 @app.route('/download', methods=['GET'])
 def download():
 
-    if 'url_download' in session:
-        url_link = session['url_download']
+    url_link = session['url_download']
 
-        link =urllib.parse.quote(url_link,safe='')
+    yt = YouTube(str(url_link))
 
-        yt = YouTube(str(url_link))
-
-        download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
+    download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
 
     return send_file(f"{yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)}", as_attachment=True)
 
