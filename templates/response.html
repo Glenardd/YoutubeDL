@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block body  %}
 
-<form id='download' action='/download' name='url-forms' method='POST'>
+<form id='download' action='/download' name='download'>
     <img id='thumbnail' src="{{ thumbnail }}">
     <h3 id='title'>{{ title }}</h3>
     <input type='submit' name='download' id='download-button' value='Download'>
 </form>
-<form id='return' action='/return' name='url-forms' method='POST'>
+<form id='return' action='/return' name='return' method='POST'>
     <input type='submit' name='return' id='return-button' value='Return'>
 </form>
 {% endblock %}
