@@ -31,10 +31,10 @@ def response():
         link = session['url_info']
         url_str = str(link)
         yt = YouTube(url_str)
-        thumbnail = yt.thumbnail_url
+        thumbnail = yt.thumbnail_url    
         title = yt.title
 
-    return render_template('response.html', thumbnail=thumbnail, title=title)
+    return render_template('response.html', thumbnail_=thumbnail, title_=title)
 
 @app.route('/download')
 def download():
