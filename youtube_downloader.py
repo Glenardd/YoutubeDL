@@ -47,6 +47,8 @@ def download():
 
         link =urllib.parse.quote(url_link,safe='')
 
+        yt = YouTube(str(url_link))
+
         download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
 
         yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
