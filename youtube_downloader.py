@@ -19,7 +19,7 @@ def index():
         url_ = urllib.parse.quote(request.form['video-url'], safe='')
 
         session['url_download'] = request.form.get('video-url')
-        
+
         return redirect(url_for('response', url=url_))
 
     else:
@@ -39,18 +39,19 @@ def response(url):
 
     return render_template('response.html', thumbnail_=thumbnail, title_=title)
 
-@app.route('/download')
+@app.route('/download', methods=['GET'])
 def download():
 
     if 'url_download' in session:
         url_link = session['url_download']
-        yt = YouTube(url_link)
+
+        link =urllib.parse.quote(url_link,safe='')
 
         download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
 
         yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
     
-    return redirect(url_for('response'))
+        return redirect(url_for(f'response/{link}'))
 
 @app.route('/return', methods=['POST'])
 def Return():
