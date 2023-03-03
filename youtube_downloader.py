@@ -6,7 +6,7 @@ import urllib.parse
 
 app = Flask(__name__)
 
-app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 
 Session(app)
@@ -51,13 +51,10 @@ def download():
 
         download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
 
-        download_ = yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
-    
-        return send_file(download_ , as_attachment=True)
+        return send_file(yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir), as_attachment=True)
 
 @app.route('/return', methods=['POST'])
 def Return():
-    session['url_info'] = None
     session['url_download'] = None
     return redirect(url_for('index'))
     
