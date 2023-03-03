@@ -26,15 +26,16 @@ def index():
 def response():
 
     download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
-
     if 'url_info' in session:
         link = session['url_info']
+        
         url_str = str(link)
+
         yt = YouTube(url_str)
         thumbnail = yt.thumbnail_url    
         title = yt.title
 
-    return render_template('response.html', thumbnail_=thumbnail, title_=title)
+        return render_template('response.html', thumbnail_=thumbnail, title_=title)
 
 @app.route('/download')
 def download():
