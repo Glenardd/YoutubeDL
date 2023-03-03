@@ -1,15 +1,9 @@
-from flask import Flask, render_template, request, url_for, redirect, session, send_file
+from flask import Flask, render_template, request, url_for, redirect, send_file
 from  pytube import YouTube
-from flask_session import Session
 import os
 import urllib.parse
 
 app = Flask(__name__)
-
-app.config["SESSION_PERMANENT"] = True
-app.config["SESSION_TYPE"] = "filesystem"
-
-Session(app)
 
 # Routes are here
 @app.route("/", methods=['GET','POST'])
@@ -18,18 +12,14 @@ def index():
     if request.method == "POST":
         url_ = urllib.parse.quote(request.form['video-url'], safe='')
 
-        session['url_download'] = request.form.get('video-url')
-
         return redirect(url_for('response', url=url_))
 
     else:
         return render_template('index.html')
 
-@app.route('/response/<url>', methods=["GET"])
+@app.route('/response/<string:url>', methods=["POST", "GET"])
 def response(url):
-
-    download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
-    
+        
     encoded_url = urllib.parse.unquote(url)
     str_url = str(encoded_url)
 
@@ -37,22 +27,27 @@ def response(url):
     thumbnail = yt.thumbnail_url    
     title = yt.title
 
-    return render_template('response.html', thumbnail_=thumbnail, title_=title)
+    if request.method == "GET":
+        return render_template('response.html', thumbnail_=thumbnail, title_=title, url=str(encoded_url))
+    else:
+        return redirect(url_for('download'))
 
-@app.route('/download', methods=['GET'])
+@app.route('/download', methods=['POST'])
 def download():
+    url_ = request.form['video-url']
+    str_url = str(url_)
 
-    url_link = session['url_download']
+    yt = YouTube(str_url)
+    
+    download_dir = f"{os.getenv('PROFILE')}\\Downloads"
+    
+    download_url = yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)
+    
+    return send_file(download_url, as_attachment=True)
 
-    yt = YouTube(str(url_link))
-
-    download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
-
-    return send_file(f"{yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)}", as_attachment=True)
 
 @app.route('/return', methods=['POST'])
 def Return():
-    session['url_download'] = None
     return redirect(url_for('index'))
     
 if __name__ == '__main__':
