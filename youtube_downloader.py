@@ -41,11 +41,9 @@ def download():
     
     #download_dir = f"{os.getenv('USERPROFILE')}//Downloads"
     
-    stream = yt.streams.filter(progressive=True).get_by_resolution('720p')
+    download = yt.streams.filter(progressive=True).get_by_resolution('720p').download()
 
-    path = stream.download()
-
-    return send_file(path, as_attachment=True, mimetype='video/mp4')
+    return send_file(download, as_attachment=True, mimetype='video/mp4')
 
 @app.route('/return', methods=['POST'])
 def Return():
