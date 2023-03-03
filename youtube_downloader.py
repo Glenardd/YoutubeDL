@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session
 from  pytube import YouTube
 from flask_session import Session
 import os
+import urllib.parse
 
 app = Flask(__name__)
 
@@ -15,29 +16,28 @@ Session(app)
 def index():
 
     if request.method == "POST":
-        session['url_info'] = request.form.get('video-url')
+        url_ = urllib.parse.quote(request.form['video-url'], safe='')
+
         session['url_download'] = request.form.get('video-url')
-        return redirect(url_for('response'))
+        
+        return redirect(url_for('response', url=url_))
 
     else:
         return render_template('index.html')
 
-@app.route('/response', methods=["GET"])
-def response():
+@app.route('/response/<url>', methods=["GET"])
+def response(url):
 
     download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
-    if 'url_info' in session:
-        link = session['url_info']
-        
-        url_str = str(link)
+    
+    encoded_url = urllib.parse.unquote(url)
+    str_url = str(encoded_url)
 
-        yt = YouTube(url_str)
-        thumbnail = yt.thumbnail_url    
-        title = yt.title
+    yt = YouTube(str_url)
+    thumbnail = yt.thumbnail_url    
+    title = yt.title
 
-        return render_template('response.html', thumbnail_=thumbnail, title_=title)
-
-    return render_template('response.html')
+    return render_template('response.html', thumbnail_=thumbnail, title_=title)
 
 @app.route('/download')
 def download():
