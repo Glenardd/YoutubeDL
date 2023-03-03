@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, send_file
 from  pytube import YouTube
-import os
 import urllib.parse
 from io import BytesIO
 
@@ -42,11 +41,8 @@ def download():
     str_url = str(url_)
 
     yt = YouTube(str_url)
-    
-    if os.name == 'nt':
-        download_dir = f"{os.getenv('USERPROFILE')}//Downloads"
 
-    video = yt.streams.filter(progressive=True).get_highest_resolution().stream_to_buffer(buffer)
+    video = yt.streams.filter(progressive=True).get_lower_resolution().stream_to_buffer(buffer)
 
     buffer.seek(0)
 
