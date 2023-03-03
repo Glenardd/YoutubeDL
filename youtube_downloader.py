@@ -51,7 +51,7 @@ def download():
 
         download_dir = f"{os.getenv('USERPROFILE')}\\Downloads"
 
-        return send_file(yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir), as_attachment=True)
+    return send_file(f"{yt.streams.filter(progressive=True).get_by_resolution('720p').download(download_dir)}", as_attachment=True)
 
 @app.route('/return', methods=['POST'])
 def Return():
