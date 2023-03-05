@@ -1,22 +1,13 @@
 from flask import Flask, render_template, request, url_for, redirect, send_file, session
 from  pytube import YouTube
 from flask_session import Session
-from flask_sqlalchemy import SQLAlchemy
 from io import BytesIO
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '1234'
 app.config["SESSION_PERMANENT"] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
-app.config['SESSION_TYPE'] = "sqlalchemy"
-
-db = SQLAlchemy(app)
-app.config['SESSION_SQLALCHEMY'] = db
-
-with app.app_context():
-    db.create_all()
-
+app.config['SESSION_TYPE'] = "filesystem"
 Session(app)
 
 # Routes are here
@@ -72,6 +63,6 @@ def download():
 def Return():
     session['url'] = None
     return redirect(url_for('index'))
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
