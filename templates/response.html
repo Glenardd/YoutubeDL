@@ -9,7 +9,7 @@
             <option value="{{ i.itag }}">{{ i.resolution }}</option>
         {% endfor %}
     </select>
-    <input type="hidden" name="video-url" id="video-url" placeholder="Copy and Paste link here" value="{{ url }}">
+    <!-- <input type="hidden" name="video-url" id="video-url" placeholder="Copy and Paste link here" value="{{ url }}"> -->
     <input type='submit' name='download' id='download-button' value='Download'>
 </form>
 <form id='return' action='/return' method='POST'>

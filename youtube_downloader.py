@@ -1,27 +1,41 @@
-from flask import Flask, render_template, request, url_for, redirect, send_file
+from flask import Flask, render_template, request, url_for, redirect, send_file, session
 from  pytube import YouTube
-import urllib.parse
+from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
 from io import BytesIO
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = '1234'
+app.config["SESSION_PERMANENT"] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.config['SESSION_TYPE'] = "sqlalchemy"
+
+db = SQLAlchemy(app)
+app.config['SESSION_SQLALCHEMY'] = db
+
+with app.app_context():
+    db.create_all()
+
+Session(app)
 
 # Routes are here
 @app.route("/", methods=['GET','POST'])
 def index():
 
     if request.method == "POST":
-        url_ = urllib.parse.quote(request.form['video-url'], safe='')
+        session['url'] = request.form['video-url']
 
-        return redirect(url_for('response', url=url_))
+        return redirect(url_for('response'))
 
     else:
         return render_template('index.html')
 
-@app.route('/response/<string:url>', methods=["POST", "GET"])
-def response(url):
-        
-    encoded_url = urllib.parse.unquote(url)
-    str_url = str(encoded_url)
+@app.route('/response', methods=["POST", "GET"])
+def response():
+    
+    url = session.get('url')
+    str_url = str(url)
 
     yt = YouTube(str_url)
     thumbnail = yt.thumbnail_url    
@@ -30,7 +44,7 @@ def response(url):
     stream = yt.streams.filter(progressive=True, mime_type='video/mp4')
 
     if request.method == "GET":
-        return render_template('response.html', thumbnail_=thumbnail, title_=title, url=str(encoded_url),stream=stream)
+        return render_template('response.html', thumbnail_=thumbnail, title_=title,stream=stream)
     else:
         return redirect(url_for('download'))
 
@@ -39,7 +53,7 @@ def download():
 
     buffer = BytesIO()
 
-    url_ = request.form['video-url']
+    url_ = session['url']
     select = request.form['resolution']
     str_url = str(url_)
 
@@ -56,6 +70,7 @@ def download():
 
 @app.route('/return', methods=['POST'])
 def Return():
+    session['url'] = None
     return redirect(url_for('index'))
     
 if __name__ == '__main__':
