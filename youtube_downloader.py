@@ -27,8 +27,10 @@ def response(url):
     thumbnail = yt.thumbnail_url    
     title = yt.title
 
+    stream = yt.streams.filter(progressive=True, mime_type='video/mp4')
+
     if request.method == "GET":
-        return render_template('response.html', thumbnail_=thumbnail, title_=title, url=str(encoded_url))
+        return render_template('response.html', thumbnail_=thumbnail, title_=title, url=str(encoded_url),stream=stream)
     else:
         return redirect(url_for('download'))
 
@@ -38,11 +40,14 @@ def download():
     buffer = BytesIO()
 
     url_ = request.form['video-url']
+    select = request.form['resolution']
     str_url = str(url_)
 
     yt = YouTube(str_url)
 
-    video = yt.streams.filter(progressive=True).get_lowest_resolution().stream_to_buffer(buffer)
+    # video = yt.streams.filter(progressive=True, mime_type='video/mp4').get_lowest_resolution().stream_to_buffer(buffer)
+
+    yt.streams.filter(progressive=True, mime_type='video/mp4').get_by_itag(select).stream_to_buffer(buffer)
 
     buffer.seek(0)
 
