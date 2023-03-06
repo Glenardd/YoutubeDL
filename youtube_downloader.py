@@ -1,14 +1,10 @@
 from flask import Flask, render_template, request, url_for, redirect, send_file, session
 from  pytube import YouTube
-from flask_session import Session
 from io import BytesIO
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = '1234'
-app.config["SESSION_PERMANENT"] = False
-app.config['SESSION_TYPE'] = "filesystem"
-Session(app)
+app.secret_key = 'mysecret'
 
 # Routes are here
 @app.route("/", methods=['GET','POST'])
@@ -61,7 +57,6 @@ def download():
 
 @app.route('/return', methods=['POST'])
 def Return():
-    session['url'] = None
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
