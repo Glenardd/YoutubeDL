@@ -73,6 +73,8 @@ footer, a{
     
 }
 
+
+
 #video-url{
     height: 30px;
     padding: 0px 15px;
@@ -104,6 +106,13 @@ h1{
     /* margin: 0px 0px 110px; */
 }
 
+#resolution{
+    padding: 5px 20px 5px;
+    border-radius: 20px;
+    border: 2px solid #343434;
+    background-color: #f36868;
+
+}
 
 #title{
     /* display: flex;
@@ -114,6 +123,14 @@ h1{
 }
 
 @media only screen and ( min-width: 768px){
+    #resolution{
+        padding: 5px 20px 5px;
+        border-radius: 20px;
+        border: 2px solid #343434;
+        background-color: white;
+    }
+
+
     #box-container{
         padding: 10px 40px 15px;
         border:solid;
@@ -167,6 +184,14 @@ h1{
         border:solid;
         border-radius: 30px;
         background-color: white;
+    }
+
+    #resolution{
+        padding: 5px 20px 5px;
+        border-radius: 20px;
+        border: 2px solid #343434;
+        background-color: white;
+
     }
 
     .content{
